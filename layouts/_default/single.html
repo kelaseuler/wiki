@@ -1,0 +1,187 @@
+{{ define "main" }}
+{{ .Scratch.Set "scope" "single" }}
+
+<article>
+  <p class="mt-0 text-2xl font-bold italic mb-6">
+    {{ .Description | emojify }}
+  </p>
+  {{ if .Params.showHero | default (.Site.Params.article.showHero | default false) }}
+  {{ $heroStyle := .Params.heroStyle }}
+  {{ if not $heroStyle }}{{ $heroStyle = .Site.Params.article.heroStyle }}{{ end }}
+  {{ $heroStyle := print "partials/hero/" $heroStyle ".html" }}
+  {{ if templates.Exists $heroStyle }}
+  {{ partial $heroStyle . }}
+  {{ else }}
+  {{ partial "partials/hero/basic.html" . }}
+  {{ end }}
+  {{ end }}
+
+  <header id="single_header" class="mt-5 max-w-prose">
+    {{ if .Params.showBreadcrumbs | default (.Site.Params.article.showBreadcrumbs | default false) }}
+    {{ partial "breadcrumbs.html" . }}
+    {{ end }}
+    <h1 class="mt-1 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+      {{ .Title | emojify }}
+    </h1>
+    <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        📁 {{ range (.GetTerms "categories") }}
+        <span class="inline-block px-1">
+        <a href="{{ .RelPermalink }}" class="text-base no-underline">
+                {{ .LinkTitle }}</a>
+        </span>
+        {{ end }}
+        <span class="ml-2"></span>
+        🏷️ {{ range (.GetTerms "tags") }}
+        <span class="inline-block px-1">
+            <a href="{{ .RelPermalink }}" class="text-base no-underline">
+                {{ .LinkTitle }}</a>
+        </span>
+        {{ end }}
+      </span>
+      {{ partial "article-meta/basic.html" (dict "context" . "scope" "single") }}
+    </div>
+    
+    {{ $authorsData := .Site.Data.authors }}
+    {{ $taxonomies := .Site.Taxonomies.authors }}
+    {{ $baseURL := .Site.BaseURL }}
+    {{ $taxonomyLink := 0 }}
+    {{ $showAuthor := 0 }}
+
+    {{ if .Params.showAuthor | default (.Site.Params.article.showAuthor | default true) }}
+      {{ $showAuthor = 1 }}
+      {{ partial "author.html" . }}
+    {{ end }}
+
+    {{ if not (strings.HasSuffix $baseURL "/") }}
+    {{ $baseURL = delimit (slice $baseURL "/") "" }}
+    {{ end }}
+
+    {{ range $author := .Page.Params.authors }}
+    {{ $authorData := index $authorsData $author }}
+    {{- if $authorData -}}
+
+    {{ range $taxonomyname, $taxonomy := $taxonomies }}
+    {{ if (eq $taxonomyname $author) }}
+    {{ $taxonomyLink = delimit (slice $baseURL "/authors/" $author) "" }}
+    {{ end }}
+    {{ end }}
+
+    {{ partial "author-extra.html" (dict "context" . "data" $authorData "link" $taxonomyLink) }}
+    {{- end -}}
+    {{ end }}
+
+    {{ if or $taxonomyLink $showAuthor }}
+    <div class="mb-5"></div>
+    {{ end }}
+  
+  </header>
+  
+  <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    
+    {{ if or (and (.Params.showTableOfContents | default (.Site.Params.article.showTableOfContents | default false)) (in
+    .TableOfContents "<ul")) (.Site.Params.article.showRelatedPosts | default false) }} <div
+      class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
+      <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky {{ if hasPrefix .Site.Params.header.layout "fixed" -}}
+        lg:top-[140px]{{ else }}lg:top-10{{ end }}">
+
+        {{ if and (.Params.showTableOfContents | default (.Site.Params.article.showTableOfContents | default false)) (in
+        .TableOfContents "<ul") }} {{ partial "toc.html" . }} {{ end }} {{ if .Site.Params.article.showRelatedPosts |
+          default false }} sd {{ end }} </div>
+      </div>
+      {{ end }}
+
+      <div class="min-w-0 min-h-0 max-w-fit">
+        
+        {{ partial "series.html" . }}
+
+        <div class="article-content text-neutral dark:text-neutral max-w-fit mb-20">
+          {{ .Content | emojify }}
+        </div>
+        
+        <!-- tags -->
+        <p class="flex flex-wrap mb-6">
+          📁 {{ range (.GetTerms "categories") }}
+          <span class="inline-block px-1">
+          <a href="{{ .RelPermalink }}" class="text-base no-underline">
+                  {{ .LinkTitle }}</a>
+          </span>
+          {{ end }}
+          <span class="ml-2"></span>
+          🏷️ {{ range (.GetTerms "tags") }}
+          <span class="inline-block px-1">
+              <a href="{{ .RelPermalink }}" class="text-base no-underline">
+                  {{ .LinkTitle }}</a>
+          </span>
+          {{ end }}
+        </p>
+        <!-- /tags -->
+        {{ partial "series-closed.html" . }}
+        {{ partial "sharing-links.html" . }}
+        <div class="share-box">
+          <div class="text-center">
+            <h3>
+              {{ if eq .Site.Language.Lang "es" }}
+              <p class="text-base text-center mb-6">
+                Participa activamente en el sitio web dando tu opinión, haciendo peticiones, sugerencias...
+              </p>
+              <div class="mb-4"></div>
+              <a href="https://github.com/knowinginner" aria-label="Conectarse via github" target="_blank" rel="noopener" class="flex justify-center items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48px" height="48px" fill="currentColor" class="bi bi-github  text-neutral-700 hover:bg-primary-500 hover:text-neutral dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800" viewBox="0 0 16 16">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                </svg>
+              </a> 
+                {{ else if eq .Site.Language.Lang "en" }}
+              <p class="text-base text-center mb-6">
+                Actively participate in the website by giving your opinion, making requests, suggestions...
+              </p>
+                <a href="https://github.com/knowinginner" aria-label="Connect on github" target="_blank" rel="noopener" class="flex justify-center items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48px" height="48px" fill="currentColor" class="bi bi-github text-neutral-700 hover:bg-primary-500 hover:text-neutral dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800" viewBox="0 0 16 16">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                  </svg>
+                </a> 
+              {{ else if eq .Site.Language.Lang "cs" }}
+              <p class="text-base text-center mb-6">
+                Aktivně se zapojujte do webu vyjadřováním svého názoru, podáváním žádostí, návrhů...
+              </p>
+              <div class="mb-3"></div>
+                <a href="https://github.com/knowinginner" aria-label="Připojit se na github" target="_blank" rel="noopener" class="flex justify-center items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48px" height="48px" fill="currentColor" class="bi bi-github text-neutral-700 hover:bg-primary-500 hover:text-neutral dark:text-neutral-300 dark:hover:bg-primary-400 dark:hover:text-neutral-800" viewBox="0 0 16 16">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                  </svg>
+                </a> 
+              {{ end }}
+            </h3>
+          </div>
+        </div>
+        {{ partial "related.html" . }}  
+      </div>
+     
+    {{ with .File }}
+     <script>
+        var oid = "views_{{ .Path }}"
+        var oid_likes = "likes_{{ .Path }}"
+      </script>
+      {{ end }}
+      {{ $jsPage := resources.Get "js/page.js" }}
+      {{ $jsPage = $jsPage | resources.Minify | resources.Fingerprint "sha512" }}
+      <script type="text/javascript" src="{{ $jsPage.RelPermalink }}" integrity="{{ $jsPage.Data.Integrity }}"></script>
+  
+    </section>
+  <footer class="pt-8 max-w-3xl print:hidden">
+
+    {{ partial "article-pagination.html" . }}
+    {{ if .Params.showComments | default (.Site.Params.article.showComments | default false) }}
+    {{ if templates.Exists "partials/comments.html" }}
+    <div class="pt-3">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="pt-3">
+        {{ partial "comments.html" . }}
+      </div>
+    </div>
+    {{ else }}
+    {{ warnf "[BLOWFISH] Comments are enabled for %s but no comments partial exists." .File.Path }}
+    {{ end }}
+    {{ end }}
+  </footer>
+</article>
+{{ end }}

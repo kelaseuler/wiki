@@ -1,0 +1,11 @@
+<article class="max-w-7xl">
+  {{ with .Title }}
+    <header>
+      <h1>{{ . | emojify }}</h1>
+    </header>
+  {{ end }}
+  <section>{{ .Content | emojify }}</section>
+</article>
+<section>
+  {{ partial "recent-articles/main.html" . }}
+</section>

@@ -1,0 +1,23 @@
+{{ $disableImageOptimization := .Page.Site.Params.disableImageOptimization | default false }}
+
+{{- $images := .Resources.ByType "image" -}}
+{{- $featured := $images.GetMatch "*feature*" -}}
+{{- if not $featured }}{{ $featured = $images.GetMatch "{*cover*,*thumbnail*}" }}{{ end -}}
+{{- with $featured -}}
+    {{ if $disableImageOptimization }}
+        {{ with . }}
+            <div class="w-full h-36 md:h-56 lg:h-72 single_hero_basic nozoom" style="background-image:url({{ .RelPermalink }});"></div>
+        {{ end }}
+    {{ else }}
+        {{ with .Resize "1200x" }}
+        {{ if fileExists (replace .RelPermalink "webp" "avif") }}
+        <source type="image/avif" 
+                srcset="{{ replace .RelPermalink "webp" "avif" }}"
+                width="800"
+                height="150"
+                alt="{{ .Title }}">
+        {{ end }}
+            <div class="w-full h-36 md:h-56 lg:h-72 single_hero_basic nozoom" style="background-image:url({{ .RelPermalink }});"></div>
+        {{ end }}
+    {{ end }}
+{{- end -}}

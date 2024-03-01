@@ -1,0 +1,84 @@
+    <!-- component -->
+<div class="relative flex justify-center items-center">
+ 
+    <button onclick="showMenu(true)" class="focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 focus:outline-none absolute z-0 top-48 py-2 px-7 bg-gray-800 text-white rounded text-base hover:bg-black">
+        Open</button>
+  
+    <div id="menu" class="w-full h-full bg-gray-900 bg-opacity-80 top-0 fixed sticky-0">
+      <div class="2xl:container  2xl:mx-auto py-48 px-4 md:px-28 flex justify-center items-center">
+        <div class="w-96 md:w-auto dark:bg-gray-800 relative flex flex-col justify-center items-center bg-white py-16 px-4 md:px-24 xl:py-24 xl:px-36">
+          <div role="banner">
+            
+          </div>
+          <div class="mt-12">
+            <h1 role="main" class="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-center text-gray-800">
+                We use cookies</h1>
+          </div>
+          <div class="mt">
+            <p class="mt-6 sm:w-80 text-base dark:text-white leading-7 text-center text-gray-800">
+                Please, accept these sweeties to continue enjoying our site!</p>
+          </div>
+          <button class="w-full dark:text-gray-800 dark:hover:bg-gray-100 dark:bg-white sm:w-auto mt-14 text-base leading-4 text-center text-white py-6 px-16 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 bg-gray-800 hover:bg-black">
+            Mmm... Sweet!</button>
+          <a href="javascript:void(0)" class="mt-6 dark:text-white dark:hover:border-white text-base leading-none focus:outline-none hover:border-gray-800 focus:border-gray-800 border-b border-transparent text-center text-gray-800">
+            Nope.. I am on a diet</a>
+          <button onclick="showMenu(true)" class="text-gray-800 dark:text-gray-400 absolute top-8 right-8 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800" aria-label="close">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M6 6L18 18" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>let menu = document.getElementById("menu");
+  const showMenu = (flag) => {
+    menu.classList.toggle("hidden");
+  };
+  </script>
+
+
+<!-- Cookies -->
+<div class="absolute bottom-0 left-0 p-4 bg-neutral-50 border-t-4">
+  <h2 class="mb-2 text-xl font-heading">Cookie Policy</h2>
+  <p class="mb-4">Our site uses cookies, which helps us to improve our site and enables us to deliver the best possible service and customer experience. By clicking Accept, you are agreeing to our cookie policy. <a class="font-semibold text-primary-500 hover:underline" href="#">Terms</a>.</p>
+  <div class="justify-center">
+        <a class="rounded-full inline-flex items-center px-4 py-2 leading-none text-neutral-50" href="#" style="background-color:#4caf50">
+        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+           <polyline points="20 6 9 17 4 12" /></svg>
+        Accept
+     </a>
+        <a class="rounded-full inline-flex items-center px-4 py-2 leading-none text-neutral-50" href="#" style="background-color:#f44336">
+        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+           <line x1="18" y1="6" x2="6" y2="18" />
+           <line x1="6" y1="6" x2="18" y2="18" /></svg>
+        Decline
+     </a>
+     <a class="rounded-full inline-flex items-center px-4 py-2 leading-none text-neutral-50" href="#" style="background-color:#607d8b">
+        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+           <circle cx="12" cy="12" r="3" />
+           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+        Cookie Policy
+     </a>
+  </div>
+</div>
+<!-- /Cookie -->
+
+
+    <script>
+        const cookieContainer = document.querySelector(".cookie-container");
+        const cookieButton = document.querySelector(".cookie-btn");
+
+        cookieButton.addEventListener("click", () => {
+          cookieContainer.classList.remove("active");
+          localStorage.setItem("cookieBannerDisplayed", "true");
+        });
+        
+        setTimeout(() => {
+          if (!localStorage.getItem("cookieBannerDisplayed")) {
+            cookieContainer.classList.add("active");
+          }
+        }, 2000);
+    </script>
+    

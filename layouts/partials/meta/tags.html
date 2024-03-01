@@ -1,0 +1,15 @@
+<span class="flex flex-wrap mb-6">
+    📁 {{ range (.GetTerms "categories") }}
+    <span class="inline-block px-1">
+    <a href="{{ .RelPermalink }}" class="text-base no-underline">
+            {{ .LinkTitle }}</a>
+    </span>
+    {{ end }}
+
+    🏷️ {{ range (.GetTerms "tags") }}
+    <span class="inline-block px-1">
+        <a href="{{ .RelPermalink }}" class="text-base no-underline">
+            {{ .LinkTitle }}</a>
+    </span>
+    {{ end }}
+</span>
