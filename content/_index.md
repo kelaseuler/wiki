@@ -1,6 +1,6 @@
 ---
-title: "Welcome to Blowfish! :tada:"
-description: "This page was built using the Blowfish theme for Hugo."
+title: "Selamat datang di Kelas Euler!"
+description: "#Pendidikan untuk Semua"
 ---
 
 Welcome to Blowfish, one of the most flexible and robust Hugo themes. It is designed to be simple, fast and content-focused. Learn more about how to install or get started with our CLI using:
